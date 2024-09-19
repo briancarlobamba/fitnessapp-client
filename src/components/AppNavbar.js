@@ -12,7 +12,7 @@ const AppNavbar = ({ isAuthenticated, onLogout }) => {
 
   return (
     <Navbar bg="light" expand="lg">
-      <Navbar.Brand href="/">Fitness Tracker</Navbar.Brand>
+      <Navbar.Brand href="/">Fitness App</Navbar.Brand>
       <Nav className="ml-auto">
         {isAuthenticated ? (
           <>

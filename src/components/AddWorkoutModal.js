@@ -1,22 +1,31 @@
-import React, { useState, useContext } from 'react';
+import React, { useState } from 'react';
 import axios from 'axios';
-import { UserContext } from '../context/UserContext';
 import notyf from '../utils/notyf';
+import { Modal, Button } from 'react-bootstrap';
 
-const AddWorkoutModal = ({ fetchWorkouts }) => {
+const AddWorkoutModal = ({ show, onHide, fetchWorkouts }) => {
   const [name, setName] = useState('');
   const [duration, setDuration] = useState('');
-  const { user } = useContext(UserContext);
 
   const handleAddWorkout = async () => {
+    const token = localStorage.getItem('token'); // Retrieve token from local storage
+
+    if (!token) {
+      console.error('No token found');
+      notyf.error('Authentication required');
+      return;
+    }
+
     try {
       await axios.post('https://fitnessapp-api-ln8u.onrender.com/workouts/addWorkout', {
-        name, duration
+        name,
+        duration
       }, {
-        headers: { Authorization: `Bearer ${user.token}` },
+        headers: { Authorization: `Bearer ${token}` },
       });
       fetchWorkouts();
       notyf.success('Workout added successfully');
+      onHide(); // Close the modal
     } catch (error) {
       console.error(error);
       notyf.error('Failed to add workout');
@@ -24,35 +33,35 @@ const AddWorkoutModal = ({ fetchWorkouts }) => {
   };
 
   return (
-    <div className="modal fade" id="addWorkoutModal" tabIndex="-1">
-      <div className="modal-dialog">
-        <div className="modal-content">
-          <div className="modal-header">
-            <h5 className="modal-title">Add Workout</h5>
-            <button type="button" className="btn-close" data-bs-dismiss="modal"></button>
-          </div>
-          <div className="modal-body">
-            <input
-              type="text"
-              className="form-control"
-              placeholder="Workout Name"
-              onChange={(e) => setName(e.target.value)}
-            />
-            <input
-              type="text"
-              className="form-control mt-2"
-              placeholder="Duration"
-              onChange={(e) => setDuration(e.target.value)}
-            />
-          </div>
-          <div className="modal-footer">
-            <button className="btn btn-primary" data-bs-dismiss="modal" onClick={handleAddWorkout}>
-              Add Workout
-            </button>
-          </div>
-        </div>
-      </div>
-    </div>
+    <Modal show={show} onHide={onHide}>
+      <Modal.Header closeButton>
+        <Modal.Title>Add Workout</Modal.Title>
+      </Modal.Header>
+      <Modal.Body>
+        <input
+          type="text"
+          className="form-control"
+          placeholder="Workout Name"
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+        />
+        <input
+          type="text"
+          className="form-control mt-2"
+          placeholder="Duration"
+          value={duration}
+          onChange={(e) => setDuration(e.target.value)}
+        />
+      </Modal.Body>
+      <Modal.Footer>
+        <Button variant="secondary" onClick={onHide}>
+          Close
+        </Button>
+        <Button variant="primary" onClick={handleAddWorkout}>
+          Add Workout
+        </Button>
+      </Modal.Footer>
+    </Modal>
   );
 };
 

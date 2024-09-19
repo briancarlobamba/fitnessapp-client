@@ -1,13 +1,15 @@
 import axios from 'axios';
 
-const api = axios.create({
-  baseURL: 'https://fitnessapp-api-ln8u.onrender.com',
-  headers: {
-    Authorization: `Bearer ${localStorage.getItem('token')}`
-  }
-});
+const API_BASE_URL = 'https://fitnessapp-api-ln8u.onrender.com';
 
-export const register = (data) => api.post('/users/register', data);
-export const login = (data) => api.post('/users/login', data);
-export const addWorkout = (data) => api.post('/workouts/addWorkout', data);
-export const getMyWorkouts = () => api.get('/workouts/getMyWorkouts');
+export const getMyWorkouts = async () => {
+  return await axios.get(`${API_BASE_URL}/workouts/getMyWorkouts`, {
+    headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
+  });
+};
+
+export const addWorkout = async (workout) => {
+  return await axios.post(`${API_BASE_URL}/workouts/addWorkout`, workout, {
+    headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
+  });
+};
