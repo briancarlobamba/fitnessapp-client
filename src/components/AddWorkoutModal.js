@@ -1,7 +1,7 @@
 import React, { useState, useContext } from 'react';
 import axios from 'axios';
 import { UserContext } from '../context/UserContext';
-import notyf from '../utils/notyf';  // Import Notyf
+import notyf from '../utils/notyf';
 
 const AddWorkoutModal = ({ fetchWorkouts }) => {
   const [name, setName] = useState('');
