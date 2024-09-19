@@ -8,12 +8,14 @@ const Register = () => {
 
   const handleRegister = async () => {
     try {
-      await axios.post('https://fitnessapp-api-ln8u.onrender.com/users/register', {
+      console.log('Registering with:', { email, password });
+      const response = await axios.post('https://fitnessapp-api-ln8u.onrender.com/users/register', {
         email, password
       });
+      console.log('Registration response:', response.data);
       notyf.success('Registration successful! Please log in.');
     } catch (error) {
-      console.error(error);
+      console.error('Registration error:', error.response ? error.response.data : error.message);
       notyf.error('Registration failed');
     }
   };
@@ -21,8 +23,18 @@ const Register = () => {
   return (
     <div className="container">
       <h2>Register</h2>
-      <input type="email" placeholder="Email" onChange={(e) => setEmail(e.target.value)} />
-      <input type="password" placeholder="Password" onChange={(e) => setPassword(e.target.value)} />
+      <input
+        type="email"
+        placeholder="Email"
+        value={email}
+        onChange={(e) => setEmail(e.target.value)}
+      />
+      <input
+        type="password"
+        placeholder="Password"
+        value={password}
+        onChange={(e) => setPassword(e.target.value)}
+      />
       <button className="btn btn-primary" onClick={handleRegister}>Register</button>
     </div>
   );
