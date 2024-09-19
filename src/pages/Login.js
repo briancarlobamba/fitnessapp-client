@@ -10,17 +10,18 @@ const Login = () => {
   const navigate = useNavigate();
   const { login } = useContext(UserContext);
 
-  const handleLogin = async () => {
-    try {
-      const res = await axios.post('https://fitnessapp-api-ln8u.onrender.com/users/login', { email, password });
-      login(res.data.token);
-      notyf.success('Login successful!');
-      navigate('/workouts');
-    } catch (error) {
-      console.error(error);
-      notyf.error('Login failed');
-    }
-  };
+const handleLogin = async () => {
+  try {
+    const res = await axios.post('https://fitnessapp-api-ln8u.onrender.com/users/login', { email, password });
+    login(res.data.token);
+    notyf.success('Login successful!');
+    navigate('/workouts');
+  } catch (error) {
+    console.error('Login error:', error.response ? error.response.data : error.message);
+    notyf.error('Login failed');
+  }
+};
+
 
   return (
     <div className="container">

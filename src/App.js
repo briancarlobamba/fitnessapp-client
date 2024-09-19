@@ -32,7 +32,7 @@ const AppContent = () => {
         <Link className="navbar-brand" to="/">Fitness Tracker</Link>
         <div className="collapse navbar-collapse">
           <ul className="navbar-nav ml-auto">
-            {!user.isAuthenticated ? (
+            {!user ? (
               <>
                 <li className="nav-item">
                   <Link className="nav-link" to="/register">Register</Link>
